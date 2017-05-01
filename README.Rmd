@@ -18,3 +18,50 @@ knitr::opts_chunk$set(
 
 ## General Goals
 
+## Let's read some data and make a plot
+
+This is Eric just messing aroung to give you some ideas of what you can do here kristy!
+
+Load libraries.
+```{r}
+library(tidyverse)
+```
+
+Read the data:
+```{r}
+dat <- read_csv("data/summer16_mesograzers.csv")
+```
+
+That reads in nicely.
+
+Let's make some summaries:
+```{r}
+dat %>%
+  count(Site, Taxa)
+```
+
+How many taxa?
+```{r}
+dat %>%
+  count(Taxa) %>%
+  arrange(desc(n))
+```
+
+Now, let's plot histograms of size.mm for Taxa with >= 30 observations:
+```{r, fig.width = 10}
+# count observations
+taxa <- dat %>%
+  count(Taxa) %>%
+  filter(n>=30)
+
+# filter data set to those with >= 30
+dat %>%
+  filter(Taxa %in% taxa$Taxa) %>%
+  ggplot(mapping = aes(x = Size.mm, fill = Taxa)) +
+  geom_histogram() +
+  facet_wrap(~ Taxa, ncol = 4)  
+
+```
+
+
+OK, this has been fun!
